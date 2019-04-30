@@ -41,7 +41,7 @@ CloudFormation do
 
         Output("#{safe_key_name}Key") {
             Value(FnGetAtt("#{safe_key_name}Key", 'Arn'))
-            Export FnSub("${EnvironmentName}-#{component_name}-key")
+            Export FnSub("${EnvironmentName}-#{safe_key_name}-key")
         }
 
     end if defined? keys
