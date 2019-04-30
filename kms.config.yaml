@@ -1,0 +1,24 @@
+# keys:
+#   aurora:
+#     key-policy:
+#       key-administration:
+#         actions:
+#           - kms:Create*
+#           - kms:Describe*
+#           - kms:Enable*
+#           - kms:List*
+#           - kms:Put*
+#           - kms:Update*
+#           - kms:Revoke*
+#           - kms:Disable*
+#           - kms:Get*
+#           - kms:Delete*
+#           - kms:ScheduleKeyDeletion
+#           - kms:CancelKeyDeletion
+#       key-usage:
+#         actions:
+#           - kms:Encrypt
+#           - kms:Decrypt
+#           - kms:ReEncrypt*
+#           - kms:GenerateDataKey*
+#           - kms:DescribeKey
