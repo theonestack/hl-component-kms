@@ -30,6 +30,7 @@ CloudFormation do
         KMS_Alias("#{safe_key_name}Alias") do
             AliasName FnSub("alias/${EnvironmentName}-#{key}")
             TargetKeyId Ref("#{safe_key_name}Key")
+            DeletionPolicy 'Retain'
         end
   
         KMS_Key("#{safe_key_name}Key") do
