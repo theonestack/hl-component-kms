@@ -39,5 +39,10 @@ CloudFormation do
             KeyPolicy policy_document
         end
 
+        Output("#{safe_key_name}Key") {
+            Value(Ref("#{safe_key_name}Key"))
+            Export FnSub("${EnvironmentName}-#{component_name}-key")
+        }
+
     end if defined? keys
 end
