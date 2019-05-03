@@ -1,38 +1,18 @@
 test_metadata:
   type: config
-  name: Specify conditions
-  description: Specify conditions for key permissions
+  name: Specify Conditions
+  description: Create key and specify further conditions
 
 keys:
-  aurora:
-    key-policy:
-      key-administration:
-        actions:
-          - kms:Create*
-          - kms:Describe*
-          - kms:Enable*
-          - kms:List*
-          - kms:Put*
-          - kms:Update*
-          - kms:Revoke*
-          - kms:Disable*
-          - kms:Get*
-          - kms:Delete*
-          - kms:ScheduleKeyDeletion
-          - kms:CancelKeyDeletion
-      key-usage:
-        actions:
-          - kms:Encrypt
-          - kms:Decrypt
-          - kms:ReEncrypt*
-          - kms:GenerateDataKey*
-          - kms:DescribeKey
-        principal:
-          AWS:
-            Fn::Sub: "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/rds.amazonaws.com/AWSServiceRoleForRDS"
-        conditions:
-          StringEquals:
-            kms:CallerAccount: 
-              Fn::Sub: "${AWS::AccountId}"
-            kms:ViaService: 
-              Fn::Sub: "rds.${AWS::Region}.amazonaws.com"
+  -
+    alias: aurora
+    usage:
+      Principal:
+        AWS:
+          Fn::Sub: "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/rds.amazonaws.com/AWSServiceRoleForRDS"
+      Conditions:
+        StringEquals:
+          kms:CallerAccount:
+            Fn::Sub: "${AWS::AccountId}"
+          kms:ViaService:
+            Fn::Sub: "rds.${AWS::Region}.amazonaws.com"

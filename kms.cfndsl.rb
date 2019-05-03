@@ -1,47 +1,36 @@
 CloudFormation do 
     Description "#{component_name} - #{component_version}"
 
-
-
     tags = []
     tags << { Key: 'Environment', Value: Ref(:EnvironmentName) }
     tags << { Key: 'EnvironmentType', Value: Ref(:EnvironmentType) }
 
     extra_tags.each { |key,value| tags << { Key: key, Value: value } } if defined? extra_tags
 
-    keys.each do |key, config|
-        safe_key_name = key.capitalize.gsub('_','').gsub('-','')
-    
+    keys.each do |key|
+
         policy_document = {}
         policy_document["Statement"] = []
-    
-        config['key-policy'].each do |sid, statement_config|
-            statement = {}
-            statement["Sid"] = sid
-            statement['Effect'] = statement_config.has_key?('effect') ? statement_config['effect'] : "Allow"
-            statement['Principal'] = statement_config.has_key?('principal') ? statement_config['principal'] : {AWS: FnSub("arn:aws:iam::${AWS::AccountId}:root")}
-            statement['Resource'] = statement_config.has_key?('resource') ? statement_config['resource'] : "*"
-            statement['Action'] = statement_config['actions']
-            statement['Condition'] = statement_config['conditions'] if statement_config.has_key?('conditions')
-            policy_document["Statement"] << statement
-        end
+        policy_document["Statement"] << create_statement(key, 'administration', default)
+        policy_document["Statement"] << create_statement(key, 'usage', default)
 
+        safe_key_name = key['alias'].capitalize.gsub('_','').gsub('-','')
 
         KMS_Alias("#{safe_key_name}Alias") do
-            AliasName FnSub("alias/${EnvironmentName}-#{key}")
-            TargetKeyId Ref("#{safe_key_name}Key")
+            AliasName FnSub("alias/${EnvironmentName}-#{key['alias']}")
+            TargetKeyId Ref("#{safe_key_name}")
             DeletionPolicy 'Retain'
         end
   
-        KMS_Key("#{safe_key_name}Key") do
-            Description config['description'] ? config['description'] : "#{key} KMS Key"
+        KMS_Key("#{safe_key_name}") do
+            Description key['description'] ? key['description'] : "#{key['alias']} KMS Key"
             DeletionPolicy 'Retain'
-            PendingWindowInDays config['key_deletion_time'] ? config['key_deletion_time'] : 7
+            PendingWindowInDays key['key_deletion_time'] ? key['key_deletion_time'] : 7
             KeyPolicy policy_document
         end
 
         Output("#{safe_key_name}Key") {
-            Value(FnGetAtt("#{safe_key_name}Key", 'Arn'))
+            Value(FnGetAtt("#{safe_key_name}", 'Arn'))
             Export FnSub("${EnvironmentName}-#{safe_key_name}-key")
         }
 

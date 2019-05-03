@@ -1,25 +1,34 @@
-component_version: 1.0.0
-# keys:
-#   aurora:
-#     key-policy:
-#       key-administration:
-#         actions:
-#           - kms:Create*
-#           - kms:Describe*
-#           - kms:Enable*
-#           - kms:List*
-#           - kms:Put*
-#           - kms:Update*
-#           - kms:Revoke*
-#           - kms:Disable*
-#           - kms:Get*
-#           - kms:Delete*
-#           - kms:ScheduleKeyDeletion
-#           - kms:CancelKeyDeletion
-#       key-usage:
-#         actions:
-#           - kms:Encrypt
-#           - kms:Decrypt
-#           - kms:ReEncrypt*
-#           - kms:GenerateDataKey*
-#           - kms:DescribeKey
+default:
+
+  usage:
+    Actions:
+      - kms:Encrypt
+      - kms:Decrypt
+      - kms:ReEncrypt*
+      - kms:GenerateDataKey*
+      - kms:DescribeKey'
+    Resource: '*'
+    Effect: Allow
+    Principal:
+      AWS:
+        FnSub: "arn:aws:iam::${AWS::AccountId}:root"
+
+  administration:
+    Actions:
+      - kms:Create*
+      - kms:Describe*
+      - kms:Enable*
+      - kms:List*
+      - kms:Put*
+      - kms:Update*
+      - kms:Revoke*
+      - kms:Disable*
+      - kms:Get*
+      - kms:Delete*
+      - kms:ScheduleKeyDeletion
+      - kms:CancelKeyDeletion
+    Resource: '*'
+    Effect: Allow
+    Principal:
+      AWS:
+        FnSub: "arn:aws:iam::${AWS::AccountId}:root"
