@@ -1,0 +1,20 @@
+test_metadata:
+  type: config
+  name: Generic key
+  description: Create key and custom actions
+
+keys:
+  -
+    alias: aurora
+    administration:
+      Actions:
+        - kms:Create*
+        - kms:Describe*
+        - kms:Enable*
+        - kms:List*
+        - kms:Put*
+        - kms:Update*
+    usage:
+      Actions:
+        - kms:Encrypt
+        - kms:Decrypt
