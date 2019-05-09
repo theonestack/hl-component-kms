@@ -1,7 +1,7 @@
 default:
 
   usage:
-    Actions:
+    Action:
       - kms:Encrypt
       - kms:Decrypt
       - kms:ReEncrypt*
@@ -14,7 +14,7 @@ default:
         FnSub: "arn:aws:iam::${AWS::AccountId}:root"
 
   administration:
-    Actions:
+    Action:
       - kms:Create*
       - kms:Describe*
       - kms:Enable*
