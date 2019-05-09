@@ -1,7 +1,7 @@
 default:
 
   usage:
-    Actions:
+    Action:
       - kms:Encrypt
       - kms:Decrypt
       - kms:ReEncrypt*
@@ -11,10 +11,10 @@ default:
     Effect: Allow
     Principal:
       AWS:
-        FnSub: "arn:aws:iam::${AWS::AccountId}:root"
+        Fn::Sub: "arn:aws:iam::${AWS::AccountId}:root"
 
   administration:
-    Actions:
+    Action:
       - kms:Create*
       - kms:Describe*
       - kms:Enable*
@@ -31,4 +31,4 @@ default:
     Effect: Allow
     Principal:
       AWS:
-        FnSub: "arn:aws:iam::${AWS::AccountId}:root"
+        Fn::Sub: "arn:aws:iam::${AWS::AccountId}:root"
