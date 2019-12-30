@@ -1,12 +1,14 @@
 CloudFormation do 
-    Description "#{component_name} - #{component_version}"
+    Description "#{external_parameters[:component_name]} - #{external_parameters[:component_version]}"
 
     tags = []
     tags << { Key: 'Environment', Value: Ref(:EnvironmentName) }
     tags << { Key: 'EnvironmentType', Value: Ref(:EnvironmentType) }
 
-    extra_tags.each { |key,value| tags << { Key: key, Value: value } } if defined? extra_tags
+    extra_tags = external_parameters.fetch(:extra_tags, {})
+    extra_tags.each { |key,value| tags << { Key: key, Value: value } }
 
+    keys = external_parameters.fetch(:keys, [])
     keys.each do |key|
 
         policy_document = {}
@@ -34,5 +36,5 @@ CloudFormation do
             Export FnSub("${EnvironmentName}-#{safe_key_name}-key")
         }
 
-    end if defined? keys
+    end
 end
